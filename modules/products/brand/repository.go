@@ -17,9 +17,9 @@ func Repo(db *gorm.DB) *Repository {
 func (repo *Repository) Find(search string) []models.Brand {
 	var data []models.Brand
 	if search != "" {
-		repo.DB.Where("name LIKE ?", "%"+search+"%").Find(&data)
+		repo.DB.Where("name LIKE ?", "%"+search+"%").Order("created_at desc").Find(&data)
 	} else {
-		repo.DB.Find(&data)
+		repo.DB.Order("created_at desc").Find(&data)
 	}
 	return data
 }
