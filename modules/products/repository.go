@@ -24,6 +24,17 @@ func (repo *Repository) Find() []models.Product {
 	return products
 }
 
+func (repo *Repository) FindDetailByID(ID int) []models.Product {
+	var products []models.Product
+	repo.DB.
+		Where("id = ?", ID).
+		Preload("Category").
+		Preload("Brand").
+		Order("created_at desc").
+		Find(&products)
+	return products
+}
+
 func (repo *Repository) Create(data *models.Product) error {
 	return repo.DB.Create(data).Error
 }

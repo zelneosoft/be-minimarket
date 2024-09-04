@@ -3,6 +3,7 @@ package category
 import (
 	"backend/constant"
 	"fmt"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,8 +14,21 @@ func ListHandler(ctx *fiber.Ctx) error {
 	}
 
 	search := ctx.Query("search")
+	isActiveQuery := ctx.Query("is_active")
 
-	var response = service.Find(search)
+	// Convert `is_active` query parameter to a pointer to bool
+	var isActive *bool
+	if isActiveQuery != "" {
+		parsedActive, err := strconv.ParseBool(isActiveQuery)
+		if err != nil {
+			return ctx.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+				"error": "Invalid value for 'is_active'. It should be 'true' or 'false'.",
+			})
+		}
+		isActive = &parsedActive
+	}
+
+	var response = service.Find(search, isActive)
 
 	return ctx.JSON(&fiber.Map{
 		"data":  response,

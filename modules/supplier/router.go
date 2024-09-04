@@ -1,4 +1,4 @@
-package branchs
+package supplier
 
 import (
 	"github.com/gofiber/fiber/v2"

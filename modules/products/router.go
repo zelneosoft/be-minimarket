@@ -17,6 +17,7 @@ func Register(app fiber.Router) {
 		brand.Register(brands)
 
 		route.Get("/", IndexHandler)
+		route.Get("/:id", DetailHandler)
 		route.Post("/", InsertHandler)
 		route.Put("/:id", UpdateHandler)
 	}

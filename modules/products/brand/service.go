@@ -17,8 +17,8 @@ func (s *Service) repo() *Repository {
 	return Repo(db)
 }
 
-func (s *Service) Find(search string) []models.Brand {
-	return s.repo().Find(search)
+func (s *Service) Find(search string, isActive *bool) []models.Brand {
+	return s.repo().Find(search, isActive)
 }
 
 func (s *Service) Insert(req BrandRequest) ([]*models.Brand, error) {

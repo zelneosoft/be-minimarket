@@ -1,6 +1,6 @@
-package models
+package supplier
 
-type Branch struct {
+type BranchRequest struct {
 	ID       uint   `gorm:"column:id;primaryKey" json:"id,omitempty"`
 	Name     string `gorm:"column:name" json:"name,omitempty"`
 	Address  string `gorm:"column:address" json:"address,omitempty"`

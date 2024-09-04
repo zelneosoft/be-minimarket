@@ -14,13 +14,19 @@ func Repo(db *gorm.DB) *Repository {
 	return &Repository{DB: db}
 }
 
-func (repo *Repository) Find(search string) []models.Brand {
+func (repo *Repository) Find(search string, isActive *bool) []models.Brand {
 	var data []models.Brand
-	if search != "" {
-		repo.DB.Where("name LIKE ?", "%"+search+"%").Order("created_at desc").Find(&data)
-	} else {
-		repo.DB.Order("created_at desc").Find(&data)
+	query := repo.DB.Order("created_at desc")
+
+	if isActive != nil {
+		query = query.Where("is_active = ?", *isActive)
 	}
+
+	if search != "" {
+		query = query.Where("name LIKE ?", "%"+search+"%")
+	}
+
+	query.Find(&data)
 	return data
 }
 

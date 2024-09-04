@@ -17,8 +17,8 @@ func (s *Service) repo() *Repository {
 	return Repo(db)
 }
 
-func (s *Service) Find(search string) []models.Category {
-	return s.repo().Find(search)
+func (s *Service) Find(search string, isActive *bool) []models.Category {
+	return s.repo().Find(search, isActive)
 }
 
 func (s *Service) Insert(req CategoryRequest) ([]*models.Category, error) {

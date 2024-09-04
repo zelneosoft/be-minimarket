@@ -21,6 +21,10 @@ func (s *Service) Find() []models.Product {
 	return s.repo().Find()
 }
 
+func (s *Service) FindByID(ID int) []models.Product {
+	return s.repo().FindDetailByID(ID)
+}
+
 func (s *Service) Insert(req ProductRequest) ([]*models.Product, error) {
 	data := &models.Product{
 		Barcode:     req.Barcode,

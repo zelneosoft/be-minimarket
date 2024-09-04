@@ -3,6 +3,7 @@ package products
 import (
 	"backend/constant"
 	"fmt"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,6 +14,25 @@ func IndexHandler(ctx *fiber.Ctx) error {
 	}
 
 	var response = service.Find()
+
+	return ctx.JSON(&fiber.Map{
+		"data":   response,
+		"status": constant.STATUS_SUCCESS,
+	})
+}
+
+func DetailHandler(ctx *fiber.Ctx) error {
+	var service = Service{
+		Context: ctx,
+	}
+
+	IDStr := ctx.Params("id")
+	ID, err := strconv.Atoi(IDStr)
+	if err != nil {
+		return fiber.ErrBadRequest
+	}
+
+	var response = service.FindByID(ID)
 
 	return ctx.JSON(&fiber.Map{
 		"data":   response,

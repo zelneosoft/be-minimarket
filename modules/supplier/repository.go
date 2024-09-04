@@ -1,4 +1,4 @@
-package branchs
+package supplier
 
 import (
 	"backend/models"
