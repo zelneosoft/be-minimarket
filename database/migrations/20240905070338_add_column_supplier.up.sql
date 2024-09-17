@@ -1,0 +1,1 @@
+ALTER TABLE suppliers ADD COLUMN is_active INT DEFAULT 1 AFTER phone;

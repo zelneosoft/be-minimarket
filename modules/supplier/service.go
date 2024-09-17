@@ -17,26 +17,24 @@ func (s *Service) repo() *Repository {
 	return Repo(db)
 }
 
-func (s *Service) Find(search string) []models.Branch {
+func (s *Service) Find(search string) []models.Supplier {
 	return s.repo().Find(search)
 }
 
-func (s *Service) FindByID(ID int) []models.Branch {
-	branch, err := s.repo().FindByID(ID)
+func (s *Service) FindByID(ID int) []models.Supplier {
+	supplier, err := s.repo().FindByID(ID)
 	if err != nil {
 		return nil
 	}
-	return []models.Branch{*branch}
+	return []models.Supplier{*supplier}
 }
 
-func (s *Service) Insert(req BranchRequest) ([]*models.Branch, error) {
-	data := &models.Branch{
+func (s *Service) Insert(req SupplierRequest) ([]*models.Supplier, error) {
+	data := &models.Supplier{
 		Name:     req.Name,
 		Address:  req.Address,
 		Maps:     req.Maps,
-		Email:    req.Email,
 		Phone:    req.Phone,
-		Pic:      req.Pic,
 		IsActive: req.IsActive,
 	}
 
@@ -46,10 +44,10 @@ func (s *Service) Insert(req BranchRequest) ([]*models.Branch, error) {
 		return nil, err
 	}
 
-	return []*models.Branch{data}, nil
+	return []*models.Supplier{data}, nil
 }
 
-func (s *Service) Update(id int, req BranchRequest) (*models.Branch, error) {
+func (s *Service) Update(id int, req SupplierRequest) (*models.Supplier, error) {
 	updateData, err := s.repo().FindByID(id)
 	if err != nil {
 		return nil, err
@@ -58,9 +56,7 @@ func (s *Service) Update(id int, req BranchRequest) (*models.Branch, error) {
 	updateData.Name = req.Name
 	updateData.Address = req.Address
 	updateData.Maps = req.Maps
-	updateData.Email = req.Email
 	updateData.Phone = req.Phone
-	updateData.Pic = req.Pic
 	updateData.IsActive = req.IsActive
 
 	err = s.repo().Update(updateData)

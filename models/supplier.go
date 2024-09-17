@@ -1,6 +1,6 @@
-package supplier
+package models
 
-type SupplierRequest struct {
+type Supplier struct {
 	ID       uint   `gorm:"column:id;primaryKey" json:"id,omitempty"`
 	Name     string `gorm:"column:name" json:"name,omitempty"`
 	Address  string `gorm:"column:address" json:"address,omitempty"`
