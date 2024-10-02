@@ -9,8 +9,10 @@ func Register(app fiber.Router) {
 	{
 
 		route.Get("/", ListHandler)
-		// route.Get("/:id", DetailHandler)
+		route.Get("/detail/:id", DetailHandler)
 		route.Post("/", InsertHandler)
 		route.Put("/:id", UpdateHandler)
+
+		route.Get("/product", ListProductHandler)
 	}
 }

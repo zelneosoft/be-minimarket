@@ -4,8 +4,10 @@ import (
 	"backend/middleware"
 	"backend/modules/authentication"
 	"backend/modules/branchs"
+	"backend/modules/paymentmethod"
 	"backend/modules/products"
 	"backend/modules/purchase"
+	"backend/modules/shippingmethod"
 	"backend/modules/supplier"
 	"backend/modules/warehouse"
 
@@ -24,4 +26,6 @@ func SetupRoutes(app *fiber.App) {
 	supplier.Register(auth)
 	warehouse.Register(auth)
 	purchase.Register(auth)
+	paymentmethod.Register(auth)
+	shippingmethod.Register(auth)
 }

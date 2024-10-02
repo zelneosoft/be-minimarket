@@ -3,7 +3,6 @@ package purchase
 import (
 	"backend/constant"
 	"fmt"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,21 +13,40 @@ func ListHandler(ctx *fiber.Ctx) error {
 	}
 
 	search := ctx.Query("search")
-	isActiveQuery := ctx.Query("is_active")
+	status := ctx.Query("status")
 
-	// Convert `is_active` query parameter to a pointer to bool
-	var isActive *bool
-	if isActiveQuery != "" {
-		parsedActive, err := strconv.ParseBool(isActiveQuery)
-		if err != nil {
-			return ctx.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
-				"error": "Invalid value for 'is_active'. It should be 'true' or 'false'.",
-			})
-		}
-		isActive = &parsedActive
+	var response = service.Find(search, status)
+
+	return ctx.JSON(&fiber.Map{
+		"data":  response,
+		"count": len(response),
+		"code":  constant.STATUS_SUCCESS,
+	})
+}
+
+func DetailHandler(ctx *fiber.Ctx) error {
+	var service = Service{
+		Context: ctx,
 	}
 
-	var response = service.Find(search, isActive)
+	ID := ctx.Params("id")
+
+	var response = service.FindByID(ID)
+
+	return ctx.JSON(&fiber.Map{
+		"data":   response,
+		"status": constant.STATUS_SUCCESS,
+	})
+}
+
+func ListProductHandler(ctx *fiber.Ctx) error {
+	var service = Service{
+		Context: ctx,
+	}
+
+	search := ctx.Query("search")
+
+	var response = service.FindProduct(search)
 
 	return ctx.JSON(&fiber.Map{
 		"data":  response,
@@ -69,7 +87,7 @@ func UpdateHandler(ctx *fiber.Ctx) error {
 		Context: ctx,
 	}
 
-	request := WarehouseRequest{}
+	request := CreatePORequest{}
 	if err := ctx.BodyParser(&request); err != nil {
 		fmt.Println(err)
 		return ctx.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
@@ -91,26 +109,5 @@ func UpdateHandler(ctx *fiber.Ctx) error {
 	return ctx.JSON(&fiber.Map{
 		"data": updateData,
 		"code": constant.STATUS_SUCCESS,
-	})
-}
-
-func DeleteHandler(ctx *fiber.Ctx) error {
-	var service = Service{
-		Context: ctx,
-	}
-
-	ID := ctx.Params("id")
-
-	err := service.Delete(ID)
-	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
-			"error":   "Internal Server Error",
-			"message": fmt.Sprintf("Failed to delete. Error: %v", err),
-		})
-	}
-
-	return ctx.JSON(&fiber.Map{
-		"code":    constant.STATUS_SUCCESS,
-		"message": fmt.Sprintf("Delete data where ID %s successfully", ID),
 	})
 }

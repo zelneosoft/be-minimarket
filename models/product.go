@@ -14,4 +14,6 @@ type Product struct {
 
 	Category *Category `gorm:"foreignKey:CategoryID;references:ID" json:"category,omitempty"`
 	Brand    *Brand    `gorm:"foreignKey:BrandID;references:ID" json:"brand,omitempty"`
+
+	PurchasePrice *float64 `gorm:"-" json:"purchase_price"`
 }
